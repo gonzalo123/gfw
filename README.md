@@ -125,7 +125,7 @@ class Index
         $this->name = $request->get('name');
     }
 
-    /* @GET */
+    /** @GET */
     public function html(Request $request)
     {
         return "Hello {$this->name}";
@@ -150,7 +150,7 @@ use Gfw\View;
 
 class Index
 {
-    /* @GET */
+    /** @GET */
     public function html(View $view)
     {
         return $view->getTwig(__CLASS__)->render('index.twig', array('name' => 'Gonzalo));
@@ -181,7 +181,7 @@ class Index
         $this->twig = $view->getTwig(__CLASS__);
     }
 
-    /* @GET */
+    /** @GET */
     public function html(View $view)
     {
         return $this->twig->render('index.twig', array('name' => 'Gonzalo));
