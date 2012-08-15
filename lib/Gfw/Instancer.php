@@ -112,7 +112,8 @@ class Instancer
 
     private function renderView($out)
     {
-        $viewAnotation = array_pop($this->rAnotations->get('view'));
+        $viewAnotation = $this->rAnotations->get('view');
+        $viewAnotation = $viewAnotation[0];
         $tplName       = $viewAnotation['args'][0];
         $view          = $this->container['view'];
         $out           = $view->getTwig($this->parser->getClassFullName())->render($tplName, $out);

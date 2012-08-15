@@ -27,11 +27,8 @@ class DiTest extends \PHPUnit_Framework_TestCase
             return new View(__DIR__ . "/cache" . '/templates', TRUE);
         });
 
-
-        
         $container['view']->registerNamespace('App', __DIR__ . '/templates');
         $instancer = new Instancer($container);
-        $output = (string) $instancer->invokeAction();
-        $this->assertEquals('Hi Gonzalo', $output);
+        $this->assertEquals('Hi Gonzalo', $instancer->invokeAction());
     }
 }
