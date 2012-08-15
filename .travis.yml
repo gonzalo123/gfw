@@ -9,6 +9,3 @@ script: phpunit --configuration phpunit.xml --coverage-text
 php:
   - 5.3
   - 5.4
-
-notifications:
-  irc: "irc.freenode.org#travis"
