@@ -59,8 +59,8 @@ namespace App\Application;
 class Index
 {
     /**
-    @GET
-    @POST
+    * @GET
+    * @POST
     */
     public function html($name)
     {

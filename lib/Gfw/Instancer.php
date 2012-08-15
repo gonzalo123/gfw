@@ -14,9 +14,11 @@ namespace Gfw;
 use Notoj\ReflectionClass;
 use Gfw\Container;
 use Gfw\View;
+use Gfw\Parser;
 
 class Instancer
 {
+    /** @var Gfw\Parser */
     private $parser;
     private $container;
     private $params;
@@ -101,7 +103,19 @@ class Instancer
     {
         $this->processFixture('prefix');
         $out = call_user_func_array(array($this->getInstance(), $this->parser->getAction()), $this->params);
+        if ($this->rAnotations->has('view')) {
+            $out = $this->renderView($out);
+        }
         $this->processFixture('postfix');
+        return $out;
+    }
+
+    private function renderView($out)
+    {
+        $viewAnotation = array_pop($this->rAnotations->get('view'));
+        $tplName       = $viewAnotation['args'][0];
+        $view          = $this->container['view'];
+        $out           = $view->getTwig($this->parser->getClassFullName())->render($tplName, $out);
         return $out;
     }
 
