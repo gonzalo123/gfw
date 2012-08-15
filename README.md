@@ -11,7 +11,7 @@ Why Gfw?
 Because I want a micro framework to map:
 
 
-```
+```php
 <?php
 // url: /index.html
 // file: /App/Index.php
@@ -32,7 +32,7 @@ Quick examples
 
 Request with paramenter (only with POST request)
 
-```
+```php
 <?php
 // url: /index.html?name=Gonzalo
 // file: /App/Index.php
@@ -50,7 +50,7 @@ class Index
 
 Subfolders (GET and POST)
 
-```
+```php
 <?php
 // url: /application/index.html?name=Gonzalo
 // file: /App/Application\Index.php
@@ -71,7 +71,7 @@ class Index
 
 Returning json
 
-```
+```php
 <?php
 // url: /index.json
 // file: /App/Index.php
@@ -87,7 +87,7 @@ class Index
 }
 ```
 Parameters vía Dependency injection
-```
+```php
 <?php
 // url: /index.html
 // file: /App/Index.php
@@ -107,7 +107,7 @@ class Index
 ```
 Parameters vía Dependency injection, but in the constructor
 
-```
+```php
 <?php
 // url: /index.html
 // file: /App/Index.php
@@ -134,7 +134,7 @@ class Index
 
 Twig Integration. With Dependency injection
 
-```
+```php
 <?php
 // url: /index.html
 // file: /App/Index.php
@@ -158,7 +158,7 @@ class Index
 ```
 Twig Integration. With Dependency injection in the constructor
 
-```
+```php
 <?php
 // url: /index.html
 // file: /App/Index.php
@@ -184,6 +184,32 @@ class Index
     public function html(View $view)
     {
         return $this->twig->render('index.twig', array('name' => 'Gonzalo));
+    }
+}
+```
+
+Twig Integration within annotations
+
+```php
+<?php
+/ url: /index.html
+// file: /App/Index.php
+/*
+{# template file: /App/index.twig #}
+Hello {{name}}
+*/
+
+namespace App {
+    class Index
+    {
+        /**
+         * @GET
+         * @view Index.twig
+         */
+        public function html()
+        {
+            return array('name' => 'Gonzalo');
+        }
     }
 }
 ```

@@ -79,7 +79,7 @@ class Instancer
                     break;
             }
         } else {
-            $parameterValue = $param->isDefaultValueAvailable() ? $param->getDefaultValue() : NULL;
+            $parameterValue         = $param->isDefaultValueAvailable() ? $param->getDefaultValue() : NULL;
             $params[$parameterName] = $this->parser->getParameter($parameterName, $parameterValue);
         }
         return $params;
@@ -116,8 +116,7 @@ class Instancer
         $viewAnotation = $viewAnotation[0];
         $tplName       = $viewAnotation['args'][0];
         $view          = $this->container['view'];
-        $out           = $view->getTwig($this->parser->getClassFullName())->render($tplName, $out);
-        return $out;
+        return $view->getTwig($this->parser->getClassFullName())->render($tplName, $out);
     }
 
     private function processFixture($fixName)
