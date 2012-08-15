@@ -53,4 +53,20 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
         $container->setUpViewEnvironment(__DIR__, TRUE);
         $this->assertTrue($container['view'] instanceof View);
     }
+
+    public function testContainerFactoryMethods()
+    {
+        $request = Request::create('/foo/var.json', 'GET');
+        $container = new Container($request);
+        $container['view'] = $container->share(function() {
+            return new View(__DIR__ . "/cache" . '/templates', TRUE);
+        });
+
+        $container['view']->registerNamespace('App', __DIR__ . '/templates');
+        $this->assertTrue($container->getRequest() instanceof Request);
+        $this->assertTrue($container->getInstance() instanceof Instancer);
+        $this->assertTrue($container->getParse() instanceof Parser);
+        $this->assertTrue($container->getView() instanceof View);
+        $this->assertTrue($container->getContainer() instanceof Container);
+    }
 }

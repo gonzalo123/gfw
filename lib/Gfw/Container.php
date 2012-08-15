@@ -13,6 +13,8 @@ namespace Gfw;
 
 use Symfony\Component\HttpFoundation\Request;
 use Gfw\View;
+use Gfw\Instancer;
+use Gfw\Parser;
 
 class Container extends \Pimple
 {
@@ -36,5 +38,45 @@ class Container extends \Pimple
         $this['view'] = $this->share(function() use ($cachePath, $cacheAutoReload) {
             return new View($cachePath, $cacheAutoReload);
         });
+    }
+
+    /**
+     * @return Symfony\Component\HttpFoundation\Request
+     */
+    public function getRequest()
+    {
+        return $this['request'];
+    }
+
+    /**
+     * @return Gfw\Instancer
+     */
+    public function getInstance()
+    {
+        return $this['instancer'];
+    }
+
+    /**
+     * @return Gfw\Parser
+     */
+    public function getParse()
+    {
+        return $this['parser'];
+    }
+
+    /**
+     * @return Gfw\View
+     */
+    public function getView()
+    {
+        return $this['view'];
+    }
+
+    /**
+     * @return Gfw\View
+     */
+    public function getContainer()
+    {
+        return $this;
     }
 }
