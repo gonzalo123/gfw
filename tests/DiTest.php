@@ -29,4 +29,15 @@ class DiTest extends \PHPUnit_Framework_TestCase
         $instancer = new Instancer($container);
         $this->assertEquals('Hi Gonzalo', $instancer->invokeAction());
     }
+
+    public function testDbAsAService()
+    {
+        $request = Request::create('/index.htm', 'GET');
+        $container = new Container($request);
+        $container->setUpViewEnvironment(__DIR__ . "/cache" . '/templates', TRUE);
+        $container->getView()->registerNamespace('App', __DIR__ . '/templates');
+
+        $instancer = new Instancer($container);
+        $this->assertEquals('Hi Gonzalo', $instancer->invokeAction());
+    }
 }
