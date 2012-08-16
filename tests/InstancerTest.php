@@ -12,6 +12,7 @@
 use Gfw\Parser;
 use Gfw\Instancer;
 use Gfw\Exception;
+use Gfw\Container;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,21 +23,24 @@ class InstancerTest extends \PHPUnit_Framework_TestCase
 {
     public function testGetInstace()
     {
-        $parser = $this->getParserForOneAction('App\\Foo', 'Dummy', 'json');
+        $request = Request::create('/foo/dymmy.json', 'GET', array());
+        $parser = $this->getParserForOneAction('App\\Foo', 'Dummy', 'json', $request);
         $instancer = new Instancer($this->getContainerFromParser($parser));
         $this->assertTrue($instancer->getInstance() instanceof App\Foo\Dummy);
     }
 
     public function testCallActionWithoutParameters()
     {
-        $parser = $this->getParserForOneAction('App\\Foo', 'Dummy', 'json');
+        $request = Request::create('/foo/dummy.json', 'GET', array());
+        $parser = $this->getParserForOneAction('App\\Foo', 'Dummy', 'json', $request);
         $instancer = new Instancer($this->getContainerFromParser($parser));
         $this->assertEquals(array('Hi', 'Gonzalo'), $instancer->invokeAction());
     }
 
     public function testCallActionWithParameters()
     {
-        $parser = $this->getParserForOneAction('App\\Foo', 'Dummy', 'txt');
+        $request = Request::create('/foo/dummy.txt', 'GET', array());
+        $parser = $this->getParserForOneAction('App\\Foo', 'Dummy', 'txt', $request);
         $parser->expects($this->any())->method('getParameter')->with($this->equalTo('name'))->will(
             $this->returnValue('Gonzalo')
         );
@@ -46,17 +50,17 @@ class InstancerTest extends \PHPUnit_Framework_TestCase
 
     public function testCallActionDIRequest()
     {
-        $parser = $this->getParserForOneAction('App\\Foo', 'Dummy', 'html');
-        $parser->expects($this->any())->method('getRequest')->will(
-            $this->returnValue(Request::create('/foo/dummy.html', 'GET', array('name' => 'Gonzalo')))
-        );
-        $instancer = new Instancer($this->getContainerFromParser($parser));
+        $request = Request::create('/foo/dummy.html', 'GET', array('name' => 'Gonzalo'));
+        $parser = $this->getParserForOneAction('App\\Foo', 'Dummy', 'html', $request);
+        $parser->expects($this->any())->method('getRequest')->will($this->returnValue($request));
+        $instancer = new Instancer($this->getContainerFromParser($parser, '/foo/dummy.html', array('name' => 'Gonzalo')));
         $this->assertEquals('Hi Gonzalo', $instancer->invokeAction());
     }
 
     public function testMethodNotAllowed()
     {
-        $parser    = $this->getParserForOneAction('App\\Annotations', 'Dummy', 'json', 'GET');
+        $request = Request::create('/annotations/dummy.json', 'GET', array());
+        $parser    = $this->getParserForOneAction('App\\Annotations', 'Dummy', 'json', $request);
         $instancer = new Instancer($this->getContainerFromParser($parser));
         try {
             $instancer->invokeAction();
@@ -69,7 +73,8 @@ class InstancerTest extends \PHPUnit_Framework_TestCase
 
     public function testReturnResponseObject()
     {
-        $parser    = $this->getParserForOneAction('App\\Foo', 'Dummy', 'action', 'GET');
+        $request = Request::create('/foo/dummy.action', 'GET', array());
+        $parser    = $this->getParserForOneAction('App\\Foo', 'Dummy', 'action', $request);
         $instancer = new Instancer($this->getContainerFromParser($parser));
         $out       = $instancer->invokeAction();
         $this->assertTrue($out instanceof Response);
@@ -77,7 +82,8 @@ class InstancerTest extends \PHPUnit_Framework_TestCase
 
     public function testPostfix()
     {
-        $parser           = $this->getParserForOneAction('App\\Annotations', 'Dummy', 'action', 'GET');
+        $request = Request::create('/annotations/dummy.action', 'GET', array());
+        $parser           = $this->getParserForOneAction('App\\Annotations', 'Dummy', 'action', $request);
         App\Logger::$flag = 0;
         $instancer        = new Instancer($this->getContainerFromParser($parser));
         $out              = $instancer->invokeAction();
@@ -86,7 +92,8 @@ class InstancerTest extends \PHPUnit_Framework_TestCase
 
     public function testwithMultiplePostfix()
     {
-        $parser           = $this->getParserForOneAction('App\\Annotations', 'Dummy', 'action2', 'GET');
+        $request = Request::create('/annotations/dummy.action2', 'GET', array());
+        $parser           = $this->getParserForOneAction('App\\Annotations', 'Dummy', 'action2', $request);
         App\Logger::$flag = 0;
         $instancer        = new Instancer($this->getContainerFromParser($parser));
         $out              = $instancer->invokeAction();
@@ -95,7 +102,8 @@ class InstancerTest extends \PHPUnit_Framework_TestCase
 
     public function testPrefix()
     {
-        $parser    = $this->getParserForOneAction('App\\Annotations', 'Dummy', 'withAuth', 'GET');
+        $request = Request::create('/annotations/dummy.withAuth', 'GET', array());
+        $parser    = $this->getParserForOneAction('App\\Annotations', 'Dummy', 'withAuth', $request);
         $instancer = new Instancer($this->getContainerFromParser($parser));
         try {
             $instancer->invokeAction();
@@ -109,9 +117,10 @@ class InstancerTest extends \PHPUnit_Framework_TestCase
 
     public function testRequestDIWithinConstructor()
     {
-        $parser = $this->getParserForOneAction('App\\Foo', 'Dummy2', 'html', 'GET');
+        $request = Request::create('/foo/dummy2.html', 'GET', array('name' => 'Gonzalo'));
+        $parser = $this->getParserForOneAction('App\\Foo', 'Dummy2', 'html', $request);
         $parser->expects($this->any())->method('getRequest')->will(
-            $this->returnValue(Request::create('/foo/dummy2.html', 'GET', array('name' => 'Gonzalo')))
+            $this->returnValue($request)
         );
         $instancer = new Instancer($this->getContainerFromParser($parser));
         $this->assertEquals('Hi Gonzalo', $instancer->invokeAction());
@@ -119,7 +128,8 @@ class InstancerTest extends \PHPUnit_Framework_TestCase
 
     public function testHandling404()
     {
-        $parser    = $this->getParserForOneAction('NonExixtent\\Namespace', 'NonExixtentClass', 'nonExistentMethod');
+        $request = Request::create('/namespace/nonExixtentClass.nonExistentMethod', 'GET', array());
+        $parser    = $this->getParserForOneAction('NonExixtent\\Namespace', 'NonExixtentClass', 'nonExistentMethod', $request);
         $instancer = new Instancer($this->getContainerFromParser($parser));
 
         try {
@@ -134,7 +144,8 @@ class InstancerTest extends \PHPUnit_Framework_TestCase
 
     public function testHandling404_1()
     {
-        $parser    = $this->getParserForOneAction('App\\Foo', 'NonExixtentClass', 'nonExistentMethod');
+        $request = Request::create('/foo/nonExixtentClass.nonExistentMethod', 'GET', array());
+        $parser    = $this->getParserForOneAction('App\\Foo', 'NonExixtentClass', 'nonExistentMethod', $request);
         $instancer = new Instancer($this->getContainerFromParser($parser));
 
         try {
@@ -149,7 +160,8 @@ class InstancerTest extends \PHPUnit_Framework_TestCase
 
     public function testHandling404_2()
     {
-        $parser    = $this->getParserForOneAction('App\\Foo', 'Dummy2', 'nonExistentMethod');
+        $request = Request::create('/foo/dummy2.nonExistentMethod', 'GET', array());
+        $parser    = $this->getParserForOneAction('App\\Foo', 'Dummy2', 'nonExistentMethod', $request);
         $instancer = new Instancer($this->getContainerFromParser($parser));
 
         try {
@@ -164,7 +176,7 @@ class InstancerTest extends \PHPUnit_Framework_TestCase
 
     private function getContainerFromParser(Parser $parser)
     {
-        $container = new \Pimple();
+        $container = new Container($parser->getRequest());
         $container['parser'] = function () use ($parser) {
             return $parser;
         };
@@ -175,20 +187,21 @@ class InstancerTest extends \PHPUnit_Framework_TestCase
      * @param $namespace
      * @param $class
      * @param $action
-     * @param $method
+     * @param $request
      * @return PHPUnit_Framework_MockObject_MockObject | Parser
      */
-    private function getParserForOneAction($namespace, $class, $action, $method = 'GET')
+    private function getParserForOneAction($namespace, $class, $action, Request $request)
     {
         $fullClassName = "{$namespace}\\{$class}";
         $parser        = $this->getMockBuilder('Gfw\Parser')
                 ->disableOriginalConstructor()
                 ->getMock();
-        $parser->expects($this->any())->method('getRequestMethod')->will($this->returnValue($method));
+        $parser->expects($this->any())->method('getRequestMethod')->will($this->returnValue($request->getMethod()));
         $parser->expects($this->any())->method('getNamespace')->will($this->returnValue($namespace));
         $parser->expects($this->any())->method('getClassName')->will($this->returnValue($class));
         $parser->expects($this->any())->method('getAction')->will($this->returnValue($action));
         $parser->expects($this->any())->method('getClassFullName')->will($this->returnValue($fullClassName));
+        $parser->expects($this->any())->method('getRequest')->will($this->returnValue($request));
         return $parser;
     }
 }

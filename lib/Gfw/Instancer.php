@@ -27,10 +27,10 @@ class Instancer
     private $rAnotations;
     private $isReady;
 
-    public function __construct(\Pimple $container)
+    public function __construct(Container $container)
     {
         $this->container = $container;
-        $this->parser    = $container['parser'];
+        $this->parser    = $container->getParser();
         $this->inspectReflectionInfo();
     }
 
@@ -75,7 +75,7 @@ class Instancer
                     $params[$parameterName] = $this->parser->getRequest();
                     break;
                 case 'Gfw\View':
-                    $params[$parameterName] = $this->container['view'];
+                    $params[$parameterName] = $this->container->getView();
                     break;
             }
         } else {
@@ -115,7 +115,7 @@ class Instancer
         $viewAnotation = $this->rAnotations->get('view');
         $viewAnotation = $viewAnotation[0];
         $tplName       = $viewAnotation['args'][0];
-        $view          = $this->container['view'];
+        $view          = $this->container->getView();
         return $view->getTwig($this->parser->getClassFullName())->render($tplName, $out);
     }
 

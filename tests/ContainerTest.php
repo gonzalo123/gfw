@@ -65,7 +65,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
         $container['view']->registerNamespace('App', __DIR__ . '/templates');
         $this->assertTrue($container->getRequest() instanceof Request);
         $this->assertTrue($container->getInstance() instanceof Instancer);
-        $this->assertTrue($container->getParse() instanceof Parser);
+        $this->assertTrue($container->getParser() instanceof Parser);
         $this->assertTrue($container->getView() instanceof View);
         $this->assertTrue($container->getContainer() instanceof Container);
     }

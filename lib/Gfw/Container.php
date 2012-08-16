@@ -59,7 +59,7 @@ class Container extends \Pimple
     /**
      * @return Gfw\Parser
      */
-    public function getParse()
+    public function getParser()
     {
         return $this['parser'];
     }
