@@ -12,6 +12,7 @@
 use Gfw\Db;
 use Symfony\Component\HttpFoundation\Request;
 use Gfw\Container;
+use Gfw\Db\PDO;
 
 class DbTest extends \PHPUnit_Framework_TestCase
 {
@@ -27,7 +28,7 @@ class DbTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($db instanceof Db);
 
         $pdo = $db->getPDO('MAIN');
-        $this->assertTrue($pdo instanceof \PDO);
+        $this->assertTrue($pdo instanceof PDO);
 
         $pdo->exec("CREATE TABLE IF NOT EXISTS messages (
                             id INTEGER PRIMARY KEY,

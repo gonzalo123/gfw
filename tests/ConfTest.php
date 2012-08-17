@@ -23,7 +23,8 @@ class ConfTest extends \PHPUnit_Framework_TestCase
             array(
                 'dsn'      => 'sqlite::memory:',
                 'username' => 'username',
-                'password' => 'password'
+                'password' => 'password',
+                'options'  => array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION)
             ), $conf->get('DB.MAIN')
         );
         //$this->assertTrue($db instanceof Db);

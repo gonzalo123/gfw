@@ -11,10 +11,12 @@
 
 namespace Gfw;
 use Gfw\Container;
+use Gfw\Db\PDO;
 
 class Db
 {
     private $controller;
+
     public function __construct(Container $container)
     {
         $this->container = $container;
@@ -22,14 +24,18 @@ class Db
 
     public function getPDO($key)
     {
-        list($dsn, $username, $password) = $this->getConnectionCredentials($key);
-        return new \PDO($dsn, $username, $password);
+        list($dsn, $username, $password, $options) = $this->getConnectionCredentials($key);
+        return new PDO($dsn, $username, $password, $options);
     }
 
     private function getConnectionCredentials($key)
     {
         $dbConf = $this->container->getConf()->get("DB.{$key}");
 
-        return array($dbConf['dsn'], $dbConf['username'], $dbConf['password']);
+        $dsn      = isset($dbConf['dsn']) ? $dbConf['dsn'] : NULL;
+        $username = isset($dbConf['username']) ? $dbConf['username'] : NULL;
+        $password = isset($dbConf['password']) ? $dbConf['password'] : NULL;
+        $options  = isset($dbConf['options']) ? $dbConf['options'] : NULL;
+        return array($dsn, $username, $password, $options);
     }
 }
