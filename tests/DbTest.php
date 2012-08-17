@@ -29,5 +29,12 @@ class DbTest extends \PHPUnit_Framework_TestCase
         $pdo = $db->getPDO('MAIN');
         $this->assertTrue($pdo instanceof \PDO);
 
+        $pdo->exec("CREATE TABLE IF NOT EXISTS messages (
+                            id INTEGER PRIMARY KEY,
+                            title TEXT,
+                            message TEXT)");
+        $pdo->exec("INSERT INTO messages(id, title, message) VALUES (1, 'title', 'message')");
+        $data = $pdo->query("SELECT * FROM messages")->fetchAll();
+        $this->assertEquals('title', $data[0]['title']);
     }
 }
