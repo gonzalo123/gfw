@@ -14,6 +14,7 @@ namespace Gfw;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\ClassLoader\UniversalClassLoader;
 use Gfw\Container;
+use Gfw\Exception;
 
 class Web
 {
@@ -47,5 +48,13 @@ class Web
     {
         $this->loader->registerNamespace($namespace, $paths);
         $this->container['view']->registerNamespace($namespace, $paths);
+    }
+
+    public function loadConfFromPath($path)
+    {
+        if (!is_file($path)) {
+            throw new Exception('Configuration file not found');
+        }
+        $this->conf = require $path;
     }
 }

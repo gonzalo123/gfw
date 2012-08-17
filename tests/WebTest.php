@@ -20,10 +20,27 @@ class WebTest extends \PHPUnit_Framework_TestCase
 {
     public function testIntegration()
     {
-        $request = Request::create('foo/dummy.txt', 'GET', array('name' => 'Gonzalo',));
-        $gfw = new Web($request);
+        $request  = Request::create('foo/dummy.txt', 'GET', array('name' => 'Gonzalo',));
+        $gfw      = new Web($request);
         $response = $gfw->getResponse();
         $this->assertTrue($response instanceof Response);
         $this->assertEquals("Hi Gonzalo", $response->getContent());
+    }
+
+    /**
+     * @expectedException  \Gfw\Exception
+     */
+    public function testLoadNonExistentConf()
+    {
+        $request = Request::create('foo/dummy.txt', 'GET', array('name' => 'Gonzalo',));
+        $gfw     = new Web($request);
+        $gfw->loadConfFromPath(__DIR__ . "nonExistentConf.php");
+    }
+
+    public function testLoadConf()
+    {
+        $request = Request::create('foo/dummy.txt', 'GET', array('name' => 'Gonzalo',));
+        $gfw     = new Web($request);
+        $gfw->loadConfFromPath(__DIR__ . "/fixtures/Conf.php");
     }
 }

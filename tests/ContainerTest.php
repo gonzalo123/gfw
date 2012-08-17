@@ -14,6 +14,7 @@ use Gfw\Responser;
 use Gfw\Parser;
 use Gfw\View;
 use Gfw\Instancer;
+use Gfw\Conf;
 
 use Symfony\Component\HttpFoundation\Request;
 
@@ -51,7 +52,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
         $request = Request::create('/foo/var.json', 'GET');
         $container = new Container($request);
         $container->setUpViewEnvironment(__DIR__, TRUE);
-        $this->assertTrue($container['view'] instanceof View);
+        $this->assertTrue($container->getView() instanceof View);
     }
 
     public function testContainerFactoryMethods()
@@ -63,10 +64,12 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
         });
 
         $container['view']->registerNamespace('App', __DIR__ . '/templates');
+        $container->setUpConfiguration(include_once __DIR__ . '/fixtures/Conf.php');
         $this->assertTrue($container->getRequest() instanceof Request);
         $this->assertTrue($container->getInstance() instanceof Instancer);
         $this->assertTrue($container->getParser() instanceof Parser);
         $this->assertTrue($container->getView() instanceof View);
         $this->assertTrue($container->getContainer() instanceof Container);
+        $this->assertTrue($container->getConf() instanceof Conf);
     }
 }

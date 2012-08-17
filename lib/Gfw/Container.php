@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Gfw\View;
 use Gfw\Instancer;
 use Gfw\Parser;
+use Gfw\Conf;
 
 class Container extends \Pimple
 {
@@ -40,12 +41,27 @@ class Container extends \Pimple
         });
     }
 
+    public function setUpConfiguration($conf)
+    {
+        $this['conf'] = $this->share(function() use ($conf) {
+            return new Conf($conf);
+        });
+    }
+
     /**
      * @return Symfony\Component\HttpFoundation\Request
      */
     public function getRequest()
     {
         return $this['request'];
+    }
+
+    /**
+     * @return Gfw\Conf
+     */
+    public function getConf()
+    {
+        return $this['conf'];
     }
 
     /**
