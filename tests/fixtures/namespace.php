@@ -51,8 +51,6 @@ namespace App\Foo {
 
 namespace App\Annotations {
 
-    use Symfony\Component\HttpFoundation\Request;
-
     class Dummy
     {
         /**

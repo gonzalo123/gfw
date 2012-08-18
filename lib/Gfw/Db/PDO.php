@@ -15,24 +15,6 @@ use Gfw\Db\Sql;
 
 class PDO extends \PDO
 {
-    private $forcedRollback = false;
-    public function transactional(\Closure $func)
-    {
-        $this->beginTransaction();
-        try {
-            $func($this);
-            $this->forcedRollback ? $this->rollback() : $this->commit();
-        } catch (\Exception $e) {
-            $this->rollback();
-            throw $e;
-        }
-    }
-
-    public function forceRollback()
-    {
-        $this->forcedRollback = true;
-    }
-
     public function getSql()
     {
         return new Sql($this);

@@ -33,12 +33,4 @@ class ViewTest extends \PHPUnit_Framework_TestCase
             $this->assertEquals(404, $e->getCode());
         }
     }
-
-    private function getTwigEnvironment()
-    {
-        $loader = new \Twig_Loader_Filesystem(__DIR__ . "/templates");
-        return new \Twig_Environment($loader, array(
-            'auto_reload' => TRUE
-        ));
-    }
 }
