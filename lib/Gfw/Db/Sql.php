@@ -101,4 +101,9 @@ class Sql
         }
         return ' WHERE ' . implode(' AND ', $whereSql);
     }
+
+    public function getPDO()
+    {
+        return $this->pdo;
+    }
 }

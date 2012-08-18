@@ -16,6 +16,7 @@ use Gfw\View;
 use Gfw\Instancer;
 use Gfw\Parser;
 use Gfw\Conf;
+use Gfw\Db;
 
 class Container extends \Pimple
 {
@@ -31,6 +32,10 @@ class Container extends \Pimple
         };
         $this['responser'] = function ($c) {
             return new Responser($c['instancer']);
+        };
+
+        $this['db'] = function ($c) {
+            return new Db($c);
         };
     }
 
@@ -54,6 +59,14 @@ class Container extends \Pimple
     public function getRequest()
     {
         return $this['request'];
+    }
+
+    /**
+     * @return Gfw\Db
+     */
+    public function getDb()
+    {
+        return $this['db'];
     }
 
     /**

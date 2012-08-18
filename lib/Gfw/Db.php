@@ -12,6 +12,7 @@
 namespace Gfw;
 use Gfw\Container;
 use Gfw\Db\PDO;
+use Gfw\Db\Sql;
 
 class Db
 {

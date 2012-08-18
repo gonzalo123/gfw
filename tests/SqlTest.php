@@ -9,8 +9,9 @@
  * file that was distributed with this source code.
  */
 
-use Gfw\Db\PDO;
+use Gfw\Db;
 use Gfw\Db\Sql;
+use Gfw\Db\PDO;
 
 class SqlTest extends \PHPUnit_Framework_TestCase
 {
@@ -25,7 +26,7 @@ class SqlTest extends \PHPUnit_Framework_TestCase
                                     surname TEXT)");
     }
 
-    public function testTransactions()
+    public function testOperations()
     {
         $sql = new Sql($this->pdo);
 
@@ -48,5 +49,7 @@ class SqlTest extends \PHPUnit_Framework_TestCase
 
         $data = $sql->select('users', array('uid' => 7));
         $this->assertTrue(count($data) == 0);
+
+        $this->assertTrue($sql->getPDO() instanceof PDO);
     }
 }

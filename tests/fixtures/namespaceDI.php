@@ -1,6 +1,7 @@
 <?php
 
 namespace App {
+    use Gfw\Db;
     class Index
     {
         /**
@@ -16,10 +17,10 @@ namespace App {
          * @GET
          * @view Index.twig
          */
-        public function htm()
+        public function htm(Db $db)
         {
-            //$db->getPDO('MAIN');
-            return array('name' => 'Gonzalo');
+            $data = $db->getPDO('PG')->getSql()->select('users', array('id' => 1));
+            return array('name' => $data[0]['username']);
         }
     }
 }

@@ -77,6 +77,9 @@ class Instancer
                 case 'Gfw\View':
                     $params[$parameterName] = $this->container->getView();
                     break;
+                case 'Gfw\Db':
+                    $params[$parameterName] = $this->container->getDb();
+                    break;
             }
         } else {
             $parameterValue         = $param->isDefaultValueAvailable() ? $param->getDefaultValue() : NULL;
