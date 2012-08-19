@@ -325,7 +325,7 @@ class Index
 }
 ```
 
-Inject PDO with anototion
+Inject PDO with anotation
 ===========
 
 * url: /index.html
@@ -358,7 +358,7 @@ class Index
 }
 ```
 
-Inject Sql Object with anototion
+Inject Sql Object with anotation
 ===========
 
 * url: /index.html
