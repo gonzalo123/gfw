@@ -50,6 +50,23 @@ php -S localhost:8888 www/routing.php
 
 Open a web browser and type: http://localhost:8888/index.html
 
+Framework bootstrap:
+
+```php
+// file: index.php
+<?php
+require_once __DIR__ . '/../../vendor/autoload.php';
+
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Gfw\Web;
+
+$web = new Web(Request::createFromGlobals());
+$web->setUpViewEnvironment(__DIR__ . "/../cache", TRUE);
+$web->registerNamespace('App', __DIR__ . '/..');
+$web->loadConfFromPath(__DIR__ . "/../Conf.php");
+$web->getResponse()->send();
+```
 
 Quick examples
 ============
@@ -238,6 +255,21 @@ class Index
 ```
 
 Db Integration
+You need to define the DB connections within the Conf.php file:
+
+```php
+<?php
+return array(
+    'DB' => array(
+        'MAIN' => array(
+            'dsn'      => 'sqlite::memory:',
+            'username' => 'username',
+            'password' => 'password',
+            'options'  => array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION)
+        ),
+    )
+);
+```
 
 ```php
 <?php
@@ -256,7 +288,7 @@ class Index
      */
     public function htm(Db $db)
     {
-        $data = $db->getPDO('PG')->getSql()->select('users', array('id' => 1));
+        $data = $db->getPDO('MAIN')->getSql()->select('users', array('id' => 1));
         return $data[0]['username'];
     }
 }
