@@ -20,26 +20,26 @@ include_once __DIR__ . '/fixtures/namespaceDI.php';
 
 class DiTest extends \PHPUnit_Framework_TestCase
 {
-    public function testViewDIOverAnnotation()
+    public function _testViewDIOverAnnotation()
     {
-        $request = Request::create('/index.html', 'GET');
-        $container = new Container($request);
-        $container->setUpViewEnvironment(__DIR__ . "/cache" . '/templates', TRUE);
-        $container->getView()->registerNamespace('App', __DIR__ . '/templates');
+        $container = $this->getContainer('/index.htm');
 
         $instancer = new Instancer($container);
         $this->assertEquals('Hi Gonzalo', $instancer->invokeAction());
     }
 
-    public function testDbAsAService()
+    public function _testDbAsAService()
     {
-        $request = Request::create('/index.htm', 'GET');
-        $container = new Container($request);
-        $container->setUpViewEnvironment(__DIR__ . "/cache" . '/templates', TRUE);
-        $container->getView()->registerNamespace('App', __DIR__ . '/templates');
-        $container->setUpConfiguration(include __DIR__ . '/fixtures/Conf.php');
+        $container = $this->getContainer('/index.htm');
+        $this->insertDummyData($container);
 
-        $db = new Db($container);
+        $instancer = new Instancer($container);
+        $this->assertEquals('Hi Gonzalo', $instancer->invokeAction());
+    }
+
+    private function insertDummyData($container)
+    {
+        $db  = new Db($container);
         $pdo = $db->getPDO('PG');
         $this->assertTrue($pdo instanceof PDO);
 
@@ -50,9 +50,33 @@ class DiTest extends \PHPUnit_Framework_TestCase
         );
         $pdo->exec("DELETE FROM users");
         $pdo->exec("INSERT INTO users(id, username) VALUES (1, 'Gonzalo')");
+    }
 
-        $data = $pdo->getSql()->select('users', array('id' => 1));
+    public function testPDOAsAServiceOverAnnotation()
+    {
+        $container = $this->getContainer('/index.service');
+        $this->insertDummyData($container);
+
         $instancer = new Instancer($container);
         $this->assertEquals('Hi Gonzalo', $instancer->invokeAction());
+    }
+
+    public function testSqlAsAServiceOverAnnotation()
+    {
+        $container = $this->getContainer('/index.service2');
+        $this->insertDummyData($container);
+
+        $instancer = new Instancer($container);
+        $this->assertEquals('Hi Gonzalo', $instancer->invokeAction());
+    }
+
+    private function getContainer($uri, $requestMethod = 'GET')
+    {
+        $request   = Request::create($uri, $requestMethod);
+        $container = new Container($request);
+        $container->setUpViewEnvironment(__DIR__ . "/cache" . '/templates', TRUE);
+        $container->getView()->registerNamespace('App', __DIR__ . '/templates');
+        $container->setUpConfiguration(include __DIR__ . '/fixtures/Conf.php');
+        return $container;
     }
 }

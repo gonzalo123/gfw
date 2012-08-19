@@ -80,6 +80,30 @@ class Instancer
                 case 'Gfw\Db':
                     $params[$parameterName] = $this->container->getDb();
                     break;
+                case 'Gfw\Db\PDO':
+                    if ($this->rAnotations->has('getPDO')) {
+                        $getPDOAnotations     = $this->rAnotations->get('getPDO');
+                        foreach ($getPDOAnotations as $getPDOAnotation) {
+                            $dbName              = $getPDOAnotation['args']['db'];
+                            $toVariable          = $getPDOAnotation['args']['toVariable'];
+                            if ($toVariable == $parameterName) {
+                                $params[$parameterName] = $this->container->getDb()->getPDO($dbName);
+                            }
+                        }
+                    }
+                    break;
+                case 'Gfw\Db\Sql':
+                    if ($this->rAnotations->has('getSql')) {
+                        $getSqlAnotations     = $this->rAnotations->get('getSql');
+                        foreach ($getSqlAnotations as $getSqlAnotation) {
+                            $dbName              = $getSqlAnotation['args']['db'];
+                            $toVariable          = $getSqlAnotation['args']['toVariable'];
+                            if ($toVariable == $parameterName) {
+                                $params[$parameterName] = $this->container->getDb()->getPDO($dbName)->getSql();
+                            }
+                        }
+                    }
+                    break;
             }
         } else {
             $parameterValue         = $param->isDefaultValueAvailable() ? $param->getDefaultValue() : NULL;
