@@ -10,11 +10,9 @@ Why Gfw?
 
 Because I want a micro framework to map:
 
-
+* url: /index.html
+* file: /App/Index.php
 ```php
-url: /index.html
-file: /App/Index.php
-
 <?php
 
 namespace App;
@@ -66,7 +64,7 @@ use Gfw\Web;
 $web = new Web(Request::createFromGlobals());
 $web->setUpViewEnvironment(__DIR__ . "/../cache", TRUE);
 $web->registerNamespace('App', __DIR__ . '/..');
-$web->loadConfFromPath(__DIR__ . "/../Conf.php");
+$web->registerConfFromPath(__DIR__ . "/../Conf.php");
 $web->getResponse()->send();
 ```
 
@@ -325,7 +323,7 @@ class Index
 }
 ```
 
-Inject PDO with anotation
+Inject PDO with annotation
 ===========
 
 * url: /index.html
@@ -358,7 +356,7 @@ class Index
 }
 ```
 
-Inject Sql Object with anotation
+Inject Sql Object with annotation
 ===========
 
 * url: /index.html

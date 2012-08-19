@@ -50,11 +50,11 @@ class Web
         $this->container['view']->registerNamespace($namespace, $paths);
     }
 
-    public function loadConfFromPath($path)
+    public function registerConfFromPath($path)
     {
         if (!is_file($path)) {
             throw new Exception('Configuration file not found');
         }
-        $this->conf = require $path;
+        $this->container->setUpConfiguration(require $path);
     }
 }

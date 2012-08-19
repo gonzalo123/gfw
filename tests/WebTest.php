@@ -34,13 +34,13 @@ class WebTest extends \PHPUnit_Framework_TestCase
     {
         $request = Request::create('foo/dummy.txt', 'GET', array('name' => 'Gonzalo',));
         $gfw     = new Web($request);
-        $gfw->loadConfFromPath(__DIR__ . "nonExistentConf.php");
+        $gfw->registerConfFromPath(__DIR__ . "nonExistentConf.php");
     }
 
     public function testLoadConf()
     {
         $request = Request::create('foo/dummy.txt', 'GET', array('name' => 'Gonzalo',));
         $gfw     = new Web($request);
-        $gfw->loadConfFromPath(__DIR__ . "/fixtures/Conf.php");
+        $gfw->registerConfFromPath(__DIR__ . "/fixtures/Conf.php");
     }
 }
