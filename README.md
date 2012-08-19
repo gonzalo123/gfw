@@ -74,9 +74,9 @@ Quick examples
 ============
 
 Request with paramenter (only with POST request)
-
-url: /index.html?name=Gonzalo
-file: /App/Index.php
+===========
+* url: /index.html?name=Gonzalo
+* file: /App/Index.php
 
 ```php
 <?php
@@ -94,9 +94,10 @@ class Index
 ```
 
 Subfolders (GET and POST)
+===========
 
-url: /application/index.html?name=Gonzalo
-file: /App/Application/Index.php
+* url: /application/index.html?name=Gonzalo
+* file: /App/Application/Index.php
 
 ```php
 <?php
@@ -117,9 +118,10 @@ class Index
 ```
 
 Returning json
+===========
 
-url: /index.json
-file: /App/Index.php
+* url: /index.json
+* file: /App/Index.php
 
 ```php
 <?php
@@ -136,9 +138,10 @@ class Index
 }
 ```
 Parameters vía Dependency injection
+===========
 
-url: /index.html
-file: /App/Index.php
+* url: /index.html
+* file: /App/Index.php
 
 ```php
 <?php
@@ -157,9 +160,10 @@ class Index
 }
 ```
 Parameters vía Dependency injection, but in the constructor
+===========
 
-url: /index.html
-file: /App/Index.php
+* url: /index.html
+* file: /App/Index.php
 
 ```php
 <?php
@@ -185,10 +189,11 @@ class Index
 ```
 
 Twig Integration. With Dependency injection
+===========
 
-url: /index.html
-file: /App/Index.php
-template file: /App/index.twig
+* url: /index.html
+* file: /App/Index.php
+* template file: /App/index.twig
 
 ```twig
 Hello {{name}}
@@ -211,10 +216,11 @@ class Index
 }
 ```
 Twig Integration. With Dependency injection in the constructor
+===========
 
-url: /index.html
-file: /App/Index.php
-template file: /App/index.twig
+* url: /index.html
+* file: /App/Index.php
+* template file: /App/index.twig
 
 ```twig
 Hello {{name}}
@@ -244,10 +250,11 @@ class Index
 ```
 
 Twig Integration within annotations
+===========
 
-url: /index.html
-file: /App/Index.php
-template file: /App/index.twig
+* url: /index.html
+* file: /App/Index.php
+* template file: /App/index.twig
 
 ```twig
 Hello {{name}}
@@ -272,6 +279,8 @@ class Index
 ```
 
 Db Integration
+===========
+
 We need to define the DB connections within the Conf.php file:
 
 ```php
@@ -288,9 +297,9 @@ return array(
 );
 ```
 
-url: /index.html
-file: /App/Index.php
-template file: /App/index.twig
+* url: /index.html
+* file: /App/Index.php
+* template file: /App/index.twig
 
 ```twig
 Hello {{name}}
@@ -317,10 +326,11 @@ class Index
 ```
 
 Inject PDO with anototion
+===========
 
-url: /index.html
-file: /App/Index.php
-template file: /App/index.twig
+* url: /index.html
+* file: /App/Index.php
+* template file: /App/index.twig
 
 ```twig
 Hello {{name}}
@@ -349,10 +359,11 @@ class Index
 ```
 
 Inject Sql Object with anototion
+===========
 
-url: /index.html
-file: /App/Index.php
-template file: /App/index.twig
+* url: /index.html
+* file: /App/Index.php
+* template file: /App/index.twig
 
 ```twig
 Hello {{name}}
