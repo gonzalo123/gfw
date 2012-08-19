@@ -240,7 +240,8 @@ Twig Integration within annotations
 Hello {{name}}
 */
 
-namespace App
+namespace App;
+
 class Index
 {
     /**
@@ -280,7 +281,10 @@ return array(
 Hello {{name}}
 */
 
-namespace App
+namespace App;
+
+use Gfw\Db;
+
 class Index
 {
     /**
@@ -305,7 +309,10 @@ Inject PDO over anototion
 Hello {{name}}
 */
 
-namespace App
+namespace App;
+
+use Gfw\Db\PDO;
+
 class Index
 {
     /**
@@ -332,7 +339,10 @@ Inject SQLO over anototion
 Hello {{name}}
 */
 
-namespace App
+namespace App;
+
+use Gfw\Db\Sql;
+
 class Index
 {
     /**
