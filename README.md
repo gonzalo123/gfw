@@ -12,11 +12,13 @@ Because I want a micro framework to map:
 
 
 ```php
+url: /index.html
+file: /App/Index.php
+
 <?php
-// url: /index.html
-// file: /App/Index.php
 
 namespace App;
+
 class Index
 {
     /** @GET */
@@ -73,12 +75,14 @@ Quick examples
 
 Request with paramenter (only with POST request)
 
+url: /index.html?name=Gonzalo
+file: /App/Index.php
+
 ```php
 <?php
-// url: /index.html?name=Gonzalo
-// file: /App/Index.php
 
 namespace App;
+
 class Index
 {
     /** @POST */
@@ -91,12 +95,14 @@ class Index
 
 Subfolders (GET and POST)
 
+url: /application/index.html?name=Gonzalo
+file: /App/Application/Index.php
+
 ```php
 <?php
-// url: /application/index.html?name=Gonzalo
-// file: /App/Application\Index.php
 
 namespace App\Application;
+
 class Index
 {
     /**
@@ -112,12 +118,14 @@ class Index
 
 Returning json
 
+url: /index.json
+file: /App/Index.php
+
 ```php
 <?php
-// url: /index.json
-// file: /App/Index.php
 
 namespace App;
+
 class Index
 {
     /** @GET */
@@ -128,10 +136,12 @@ class Index
 }
 ```
 Parameters vía Dependency injection
+
+url: /index.html
+file: /App/Index.php
+
 ```php
 <?php
-// url: /index.html
-// file: /App/Index.php
 
 namespace App;
 
@@ -148,10 +158,11 @@ class Index
 ```
 Parameters vía Dependency injection, but in the constructor
 
+url: /index.html
+file: /App/Index.php
+
 ```php
 <?php
-// url: /index.html
-// file: /App/Index.php
 
 namespace App;
 
@@ -175,14 +186,16 @@ class Index
 
 Twig Integration. With Dependency injection
 
+url: /index.html
+file: /App/Index.php
+template file: /App/index.twig
+
+```twig
+Hello {{name}}
+```
+
 ```php
 <?php
-// url: /index.html
-// file: /App/Index.php
-/*
-{# template file: /App/index.twig #}
-Hello {{name}}
-*/
 
 namespace App;
 
@@ -199,14 +212,15 @@ class Index
 ```
 Twig Integration. With Dependency injection in the constructor
 
-```php
-<?php
-// url: /index.html
-// file: /App/Index.php
-/*
-{# template file: /App/index.twig #}
+url: /index.html
+file: /App/Index.php
+template file: /App/index.twig
+
+```twig
 Hello {{name}}
-*/
+```
+
+```php
 
 namespace App;
 
@@ -231,14 +245,16 @@ class Index
 
 Twig Integration within annotations
 
+url: /index.html
+file: /App/Index.php
+template file: /App/index.twig
+
+```twig
+Hello {{name}}
+```
+
 ```php
 <?php
-// url: /index.html
-// file: /App/Index.php
-/*
-{# template file: /App/index.twig #}
-Hello {{name}}
-*/
 
 namespace App;
 
@@ -256,7 +272,7 @@ class Index
 ```
 
 Db Integration
-You need to define the DB connections within the Conf.php file:
+We need to define the DB connections within the Conf.php file:
 
 ```php
 <?php
@@ -272,14 +288,16 @@ return array(
 );
 ```
 
+url: /index.html
+file: /App/Index.php
+template file: /App/index.twig
+
+```twig
+Hello {{name}}
+```
+
 ```php
 <?php
-// url: /index.html
-// file: /App/Index.php
-/*
-{# template file: /App/index.twig #}
-Hello {{name}}
-*/
 
 namespace App;
 
@@ -298,16 +316,18 @@ class Index
 }
 ```
 
-Inject PDO over anototion
+Inject PDO with anototion
+
+url: /index.html
+file: /App/Index.php
+template file: /App/index.twig
+
+```twig
+Hello {{name}}
+```
 
 ```php
 <?php
-// url: /index.html
-// file: /App/Index.php
-/*
-{# template file: /App/index.twig #}
-Hello {{name}}
-*/
 
 namespace App;
 
@@ -328,16 +348,18 @@ class Index
 }
 ```
 
-Inject SQLO over anototion
+Inject Sql Object with anototion
+
+url: /index.html
+file: /App/Index.php
+template file: /App/index.twig
+
+```twig
+Hello {{name}}
+```
 
 ```php
 <?php
-// url: /index.html
-// file: /App/Index.php
-/*
-{# template file: /App/index.twig #}
-Hello {{name}}
-*/
 
 namespace App;
 
