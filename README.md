@@ -27,6 +27,30 @@ class Index
 }
 ```
 
+How to install?
+============
+
+Install composer:
+```
+curl -s https://getcomposer.org/installer | php
+```
+
+Create a new project:
+
+```
+php composer.phar create-project gonzalo123/gfw gfw
+```
+
+Run dummy server (only with PHP5.4)
+
+```
+cd gfw/demo
+php -S localhost:8888 www/routing.php
+```
+
+Open a web browser and type: http://localhost:8888/index.html
+
+
 Quick examples
 ============
 
