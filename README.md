@@ -227,7 +227,7 @@ Hello {{name}}
 ```
 
 ```php
-
+<?php
 namespace App;
 
 use Gfw\View;
