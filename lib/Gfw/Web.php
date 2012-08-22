@@ -12,6 +12,7 @@
 namespace Gfw;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\ClassLoader\UniversalClassLoader;
 use Gfw\Container;
 use Gfw\Exception;
@@ -39,6 +40,9 @@ class Web
         $this->container->setUpViewEnvironment($cachePath, $cacheAutoReload);
     }
 
+    /**
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function getResponse()
     {
         return $this->container['responser']->getResponse();

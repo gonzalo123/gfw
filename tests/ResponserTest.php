@@ -36,19 +36,6 @@ class ResponserTest extends \PHPUnit_Framework_TestCase
                 ->getMock();
     }
 
-    public function testArraytoJsonResponse()
-    {
-        $this->instancer->expects($this->any())->method('invokeAction')->will(
-            $this->returnValue(array('Hi', 'Gonzalo'))
-        );
-
-        $responser = new Responser($this->instancer);
-        $response  = $responser->getResponse();
-        $this->assertTrue($response instanceof Response);
-        $this->assertEquals(json_encode(array('Hi', 'Gonzalo')), $response->getContent());
-        $this->assertEquals('application/json', $response->headers->get('Content-Type'));
-    }
-
     public function testMethodNotAllowed()
     {
         $this->instancer->expects($this->any())->method('invokeAction')->will(

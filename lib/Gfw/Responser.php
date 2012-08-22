@@ -29,12 +29,7 @@ class Responser
     {
         $content = $this->getContent();
         if ($content instanceof Response) return $content;
-
         $response = new Response();
-        if (is_array($content)) {
-            $content = json_encode($content);
-            $response->headers->set('Content-Type', 'application/json');
-        }
         $response->setContent($content);
         return $response;
     }

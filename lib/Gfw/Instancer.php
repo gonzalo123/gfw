@@ -80,6 +80,12 @@ class Instancer
                 case 'Gfw\Db':
                     $params[$parameterName] = $this->container->getDb();
                     break;
+                case 'Symfony\Component\HttpFoundation\Response':
+                    $params[$parameterName] = $this->container->getResponse();
+                    break;
+                case 'Gfw\Response\Json':
+                    $params[$parameterName] = $this->container->getJsonResponse();
+                    break;
                 case 'Gfw\Db\PDO':
                     if ($this->rAnotations->has('getPDO')) {
                         $getPDOAnotations     = $this->rAnotations->get('getPDO');

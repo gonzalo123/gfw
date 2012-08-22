@@ -2,6 +2,8 @@
 
 namespace App;
 use Gfw\View;
+use Symfony\Component\HttpFoundation\Response;
+use Gfw\Response\Json;
 
 class Index
 {
@@ -12,11 +14,24 @@ class Index
     }
 
     /** @GET */
-    public function json()
+    public function json(Json $json)
     {
-        return array(
+        $json->setJsonContent(array(
             'name'    => 'Gonzalo',
             'surname' => 'Ayuso'
-        );
+        ));
+        return $json;
+    }
+
+    /** @GET */
+    public function json2(Response $response)
+    {
+        $response->setContent(json_encode(array(
+            'name'    => 'Gonzalo',
+            'surname' => 'Ayuso'
+        )));
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;
+
     }
 }

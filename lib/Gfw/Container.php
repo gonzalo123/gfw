@@ -12,11 +12,13 @@
 namespace Gfw;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Gfw\View;
 use Gfw\Instancer;
 use Gfw\Parser;
 use Gfw\Conf;
 use Gfw\Db;
+use Gfw\Response\Json;
 
 class Container extends \Pimple
 {
@@ -26,6 +28,12 @@ class Container extends \Pimple
 
         $this['parser'] = function ($c) {
             return new Parser($c['request']);
+        };
+        $this['response'] = function () {
+            return new Response();
+        };
+        $this['jsonResponse'] = function () {
+            return new Json();
         };
         $this['instancer'] = function ($c) {
             return new Instancer($c);
@@ -59,6 +67,22 @@ class Container extends \Pimple
     public function getRequest()
     {
         return $this['request'];
+    }
+
+    /**
+     * @return Gfw\Response\Json
+     */
+    public function getJsonResponse()
+    {
+        return $this['jsonResponse'];
+    }
+
+    /**
+     * @return Symfony\Component\HttpFoundation\Response
+     */
+    public function getResponse()
+    {
+        return $this['response'];
     }
 
     /**
