@@ -20,10 +20,7 @@ class DbTest extends \PHPUnit_Framework_TestCase
     public function testDbConnection()
     {
         $request   = Request::create('/index.html', 'GET');
-        $container = new Container($request);
-        $container->setUpViewEnvironment(__DIR__ . "/cache" . '/templates', TRUE);
-        $container->setUpConfiguration(include __DIR__ . '/fixtures/Conf.php');
-        $container->getView()->registerNamespace('App', __DIR__ . '/templates');
+        $container = $this->getContainer($request);
 
         $db = new Db($container);
         $this->assertTrue($db instanceof Db);
@@ -57,5 +54,35 @@ class DbTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($pdo instanceof PDO);
 
         $this->assertTrue($pdo->getSql() instanceof Sql);
+    }
+
+    public function testTransactional()
+    {
+        $request   = Request::create('/index.html', 'GET');
+        $container = $this->getContainer($request);
+        $db        = new Db($container);
+        $pdo       = $db->getPDO('PG');
+        $pdo->exec("CREATE TABLE messages(id integer, area text, username text, message text) WITH (OIDS = FALSE);");
+        $pdo->transactional( function() use ($pdo) {
+                $pdo->getSql()->insert(
+                    'messages', array(
+                        'id'       => 1,
+                        'area'     => 'area',
+                        'username' => 'username',
+                        'message'  => 'message'
+                    )
+                );
+            }
+        );
+        $pdo->exec("DROP TABLE messages");
+    }
+
+    private function getContainer($request)
+    {
+        $container = new Container($request);
+        $container->setUpViewEnvironment(__DIR__ . "/cache" . '/templates', TRUE);
+        $container->setUpConfiguration(include __DIR__ . '/fixtures/Conf.php');
+        $container->getView()->registerNamespace('App', __DIR__ . '/templates');
+        return $container;
     }
 }

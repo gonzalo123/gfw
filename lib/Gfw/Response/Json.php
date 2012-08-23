@@ -19,5 +19,7 @@ class Json extends Response
     {
         $this->setContent(json_encode($phpArray));
         $this->headers->set('Content-Type', 'application/json');
+
+        return $this;
     }
 }

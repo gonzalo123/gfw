@@ -19,4 +19,15 @@ class PDO extends \PDO
     {
         return new Sql($this);
     }
+    public function transactional(\Closure $func)
+    {
+        $this->beginTransaction();
+        try {
+            $func($this);
+            $this->commit();
+        } catch (Exception $e) {
+            $this->rollback();
+            throw $e;
+        }
+    }
 }
