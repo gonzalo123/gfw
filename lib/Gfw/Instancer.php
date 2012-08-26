@@ -86,6 +86,9 @@ class Instancer
                 case 'Gfw\Response\Json':
                     $params[$parameterName] = $this->container->getJsonResponse();
                     break;
+                case 'Gfw\Container':
+                    $params[$parameterName] = $this->container;
+                    break;
                 case 'Gfw\Db\PDO':
                     if ($this->rAnotations->has('getPDO')) {
                         $getPDOAnotations     = $this->rAnotations->get('getPDO');
