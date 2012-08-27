@@ -70,7 +70,7 @@ class Instancer
         return $params;
     }
 
-    private function injectDependencies($params, $param)
+    private function injectDependencies($params, $param, $rMethod)
     {
         $parameterName = $param->getName();
         if (isset($param->getClass()->name)) {
@@ -94,8 +94,9 @@ class Instancer
                     $params[$parameterName] = $this->container;
                     break;
                 case 'Gfw\Db\PDO':
-                    if ($this->rAnotations->has('getPDO')) {
-                        $getPDOAnotations     = $this->rAnotations->get('getPDO');
+                    $rAnnotations = $rMethod->getAnnotations();
+                    if ($rAnnotations->has('getPDO')) {
+                        $getPDOAnotations     = $rAnnotations->get('getPDO');
                         foreach ($getPDOAnotations as $getPDOAnotation) {
                             $dbName              = $getPDOAnotation['args']['db'];
                             $toVariable          = $getPDOAnotation['args']['toVariable'];
@@ -106,8 +107,9 @@ class Instancer
                     }
                     break;
                 case 'Gfw\Db\Sql':
-                    if ($this->rAnotations->has('getSql')) {
-                        $getSqlAnotations     = $this->rAnotations->get('getSql');
+                    $rAnnotations = $rMethod->getAnnotations();
+                    if ($rAnnotations->has('getSql')) {
+                        $getSqlAnotations     = $rAnnotations->get('getSql');
                         foreach ($getSqlAnotations as $getSqlAnotation) {
                             $dbName              = $getSqlAnotation['args']['db'];
                             $toVariable          = $getSqlAnotation['args']['toVariable'];
@@ -174,7 +176,7 @@ class Instancer
     {
         $params = array();
         foreach ($this->rMethod->getParameters() as $param) {
-            $params = $this->injectDependencies($params, $param);
+            $params = $this->injectDependencies($params, $param, $this->rMethod);
         }
         return $params;
     }
