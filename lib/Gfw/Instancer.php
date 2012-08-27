@@ -50,18 +50,22 @@ class Instancer
     public function getInstance()
     {
         if ($this->isReady) {
-            $params = $this->rClass->hasMethod('__construct') ? $this->getConstructorParams() : array();
-            return count($params) > 0 ? $this->rClass->newInstanceArgs($params) : $this->rClass->newInstance();
+            if ($this->rClass->hasMethod('__construct')) {
+                $params = $this->getConstructorParams($this->rClass->getMethod('__construct'));
+            } else {
+                $params = array();
+            }
+            return $this->rClass->newInstanceArgs($params);
         } else {
             throw new Exception("Not Found", 404);
         }
     }
 
-    private function getConstructorParams()
+    private function getConstructorParams($rMethod)
     {
         $params = array();
-        foreach ($this->rClass->getMethod('__construct')->getParameters() as $param) {
-            $params = $this->injectDependencies($params, $param);
+        foreach ($rMethod->getParameters() as $param) {
+            $params = $this->injectDependencies($params, $param, $rMethod);
         }
         return $params;
     }
